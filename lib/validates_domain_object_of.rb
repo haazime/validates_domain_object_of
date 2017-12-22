@@ -21,3 +21,5 @@ module ValidatesDomainObjectOf
       end
   end
 end
+
+require 'validates_domain_object_of/active_model' if defined?(::ActiveModel)

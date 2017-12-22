@@ -1,17 +1,7 @@
 require "spec_helper"
+require 'work_time'
 
 RSpec.describe ValidatesDomainObjectOf do
-  WorkTime = Struct.new(:minutes) do
-    def self.from_hours(hours)
-      new(hours * 60)
-    end
-
-    def initialize(minutes)
-      raise ArgumentError if minutes > 60 * 8
-      super
-    end
-  end
-
   it do
     expect(described_class.construct!(60 * 3, WorkTime)).to be_truthy
   end
