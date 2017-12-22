@@ -3,20 +3,25 @@ require 'work_time'
 
 RSpec.describe ValidatesDomainObjectOf do
   it do
-    expect(described_class.construct!(60 * 3, WorkTime)).to be_truthy
+    expect(described_class.construct!(WorkTime, :new, 60 * 3)).to be_truthy
   end
 
   it do
-    expect { described_class.construct!(60 * 9, WorkTime) }
+    expect { described_class.construct!(WorkTime, :new, 60 * 9,) }
       .to raise_error(DomainObjectArgumentError)
   end
 
   it do
-    expect(described_class.construct_by_factory_method!(3, WorkTime, :from_hours)).to be_truthy
+    expect(described_class.construct!(WorkTime, :from_hours, 3)).to be_truthy
   end
 
   it do
-    expect { described_class.construct_by_factory_method!(8.1, WorkTime, :from_hours) }
+    expect { described_class.construct!(WorkTime, :from_hours, 8.1) }
       .to raise_error(DomainObjectArgumentError)
+  end
+
+  it do
+    expect { described_class.construct!(WorkTime, :from_jikan, 5) }
+      .to raise_error(NoMethodError)
   end
 end
