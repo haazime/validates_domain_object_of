@@ -14,6 +14,16 @@ module ActiveModel
       rescue DomainObjectArgumentError => error
         model.errors.add(attr, :invalid)
       end
+
+      def check_validity!
+        raise ArgumentError, 'Require :object_class' unless options.include?(:object_class)
+
+        if options[:method]
+          klass = options[:object_class]
+          method = options[:method]
+          raise ArgumentError, "`#{options[:object_class]}` is NOT respond to `#{options[:method]}`" unless klass.respond_to?(method) 
+        end
+      end
     end
 
     module HelperMethods
