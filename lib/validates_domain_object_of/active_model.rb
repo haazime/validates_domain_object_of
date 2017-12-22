@@ -6,7 +6,11 @@ module ActiveModel
     class DomainObjectValidator < EachValidator
 
       def validate_each(model, attr, value)
-        ValidatesDomainObjectOf.construct!(value, options[:object_class])
+        klass = options[:object_class]
+        method = options[:method] || :new
+
+        ValidatesDomainObjectOf.construct!(klass, method, value)
+
       rescue DomainObjectArgumentError => error
         model.errors.add(attr, :invalid)
       end
