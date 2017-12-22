@@ -1,0 +1,2 @@
+class DomainObjectArgumentError < StandardError
+end
