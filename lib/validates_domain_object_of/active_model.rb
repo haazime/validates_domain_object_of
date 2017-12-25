@@ -10,13 +10,16 @@ module ActiveModel
 
         ValidatesDomainObjectOf.construct!(klass, method, value)
 
-      rescue DomainObjectArgumentError => error
-        if defined?(I18n) && error.respond_to?(:i18n_key) && error.i18n_key
-          message = I18n.t(error.i18n_key, scope: error.i18n_scope)
-          model.errors.add(attr, message || options[:message])
-        else
-          model.errors.add(attr, :invalid, message: options[:message])
-        end
+      rescue DomainObjectArgumentError => ex
+        message =
+          if defined?(I18n) && ex.translatable?
+            I18n.t(ex.i18n_key, scope: ex.i18n_scope)
+          else
+            ex.message
+          end
+        model.errors.add(attr, message)
+      rescue ArgumentError => ex
+        model.errors.add(attr, :invalid, message: options[:message])
       end
 
       def check_validity!

@@ -10,8 +10,6 @@ module ValidatesDomainObjectOf
 
     def construct!(domain_object_class, method, arg)
       domain_object_class.send(method.to_sym, arg)
-    rescue ArgumentError
-      raise DomainObjectArgumentError
     end
   end
 end

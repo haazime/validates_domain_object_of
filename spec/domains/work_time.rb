@@ -8,7 +8,8 @@ WorkTime = Struct.new(:minutes) do
 
     ERROR_THROWERS = {
       default: -> { raise ArgumentError },
-      custom: -> { raise DomainObjectArgumentError(key: :invalid, scope: [:domain_objects, :work_time]) }
+      message: -> { raise DomainObjectArgumentError.new('must be <= 8') },
+      localize: -> { raise DomainObjectArgumentError.new(key: :invalid, scope: [:domain_objects, :work_time]) }
     }
 
     def set_error_thrower(key)

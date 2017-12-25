@@ -6,18 +6,24 @@ RSpec.describe ValidatesDomainObjectOf do
     expect(described_class.construct!(WorkTime, :new, 60 * 3)).to be_truthy
   end
 
-  it do
-    expect { described_class.construct!(WorkTime, :new, 60 * 9,) }
-      .to raise_error(DomainObjectArgumentError)
+  context 'raise DomainObjectArgumentError' do
+    before { WorkTime.set_error_thrower(:localize) }
+    after { WorkTime.set_error_thrower(:default) }
+
+    it do
+      expect { described_class.construct!(WorkTime, :new, 60 * 9,) }
+        .to raise_error(DomainObjectArgumentError)
+    end
   end
 
-  it do
-    expect(described_class.construct!(WorkTime, :from_hours, 3)).to be_truthy
-  end
+  context 'raise ArgumentError' do
+    before { WorkTime.set_error_thrower(:default) }
+    after { WorkTime.set_error_thrower(:default) }
 
-  it do
-    expect { described_class.construct!(WorkTime, :from_hours, 8.1) }
-      .to raise_error(DomainObjectArgumentError)
+    it do
+      expect { described_class.construct!(WorkTime, :new, 60 * 9,) }
+        .to raise_error(ArgumentError)
+    end
   end
 
   it do
