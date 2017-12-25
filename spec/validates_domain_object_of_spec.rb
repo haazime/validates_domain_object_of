@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'spec_helper'
 require 'work_time'
 
 RSpec.describe ValidatesDomainObjectOf do
