@@ -2,7 +2,13 @@ require 'spec_helper'
 require 'capacity_form'
 
 RSpec.describe ActiveModel::Validations::DomainObjectValidator do
+  after { CapacityForm.clear_validators! }
+
   context 'construct by new' do
+    before do
+      CapacityForm.validates_domain_object_of(:work_time_in_minutes, object_class: WorkTime)
+    end
+
     it do
       form = CapacityForm.new(work_time_in_minutes: 5 * 60)
       expect(form).to be_valid
@@ -18,6 +24,10 @@ RSpec.describe ActiveModel::Validations::DomainObjectValidator do
   end
 
   context 'construct by from_hours' do
+    before do
+      CapacityForm.validates_domain_object_of(:work_time_in_hours, object_class: WorkTime, method: :from_hours)
+    end
+
     it do
       form = CapacityForm.new(work_time_in_hours: 5)
       expect(form).to be_valid
@@ -33,9 +43,6 @@ RSpec.describe ActiveModel::Validations::DomainObjectValidator do
   end
 
   context 'invalid options' do
-    before { CapacityForm.clear_validators! }
-    after { CapacityForm.clear_validators! }
-
     it do
       expect {
         CapacityForm.validates_domain_object_of(:work_time_in_hours)
