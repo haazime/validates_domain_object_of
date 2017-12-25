@@ -42,6 +42,20 @@ RSpec.describe ActiveModel::Validations::DomainObjectValidator do
     end
   end
 
+  context 'message option' do
+    before do
+      CapacityForm.validates_domain_object_of(:work_time_in_minutes, object_class: WorkTime, message: 'wrong arg')
+    end
+
+    it do
+      form = CapacityForm.new(work_time_in_minutes: 9 * 60)
+      form.valid?
+      aggregate_failures do
+        expect(form.errors[:work_time_in_minutes]).to match_array(['wrong arg'])
+      end
+    end
+  end
+
   context 'invalid options' do
     it do
       expect {
