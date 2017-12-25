@@ -50,9 +50,7 @@ RSpec.describe ActiveModel::Validations::DomainObjectValidator do
     it do
       form = CapacityForm.new(work_time_in_minutes: 9 * 60)
       form.valid?
-      aggregate_failures do
-        expect(form.errors[:work_time_in_minutes]).to match_array(['wrong arg'])
-      end
+      expect(form.errors[:work_time_in_minutes]).to match_array(['wrong arg'])
     end
   end
 
