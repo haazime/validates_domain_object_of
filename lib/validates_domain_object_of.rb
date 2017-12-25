@@ -13,3 +13,4 @@ module ValidatesDomainObjectOf
 end
 
 require 'validates_domain_object_of/active_model' if defined?(::ActiveModel)
+require 'validates_domain_object_of/railtie' if defined?(::Rails::Railtie)
