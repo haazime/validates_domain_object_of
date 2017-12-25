@@ -1,4 +1,3 @@
-require 'active_model'
 require 'spec_helper'
 require 'capacity_form'
 

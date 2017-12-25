@@ -1,4 +1,5 @@
 require 'bundler/setup'
+require 'active_model'
 require 'validates_domain_object_of'
 
 $LOAD_PATH << File.expand_path('../forms', __FILE__)
