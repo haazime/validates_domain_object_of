@@ -1,3 +1,4 @@
 ja:
-  activemodel:
-    errors:
+  domain_objects:
+    work_time:
+      invalid: 8時間を超えています

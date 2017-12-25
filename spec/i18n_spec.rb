@@ -3,7 +3,10 @@ require 'spec_helper'
 require 'capacity_form'
 
 RSpec.describe ActiveModel::Validations::DomainObjectValidator do
-  before { ValidatesDomainObjectOf.load_i18n_locales }
+  before do
+    ValidatesDomainObjectOf.load_i18n_locales
+    I18n.locale = :ja
+  end
   after { CapacityForm.clear_validators! }
 
   it do

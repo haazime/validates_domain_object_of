@@ -4,7 +4,7 @@ WorkTime = Struct.new(:minutes) do
   end
 
   def initialize(minutes)
-    raise ArgumentError if minutes > 60 * 8
+    raise DomainObjectArgumentError.new(nil, key: :invalid, scope: [:domain_objects, :work_time]) if minutes > 60 * 8
     super
   end
 end
