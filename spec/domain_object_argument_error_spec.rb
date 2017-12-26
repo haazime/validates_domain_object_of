@@ -21,11 +21,11 @@ RSpec.describe DomainObjectArgumentError do
   end
 
   it do
-    expect { raise described_class.i18n(:inclusion) }
+    expect { raise described_class.i18n(:inclusion, min: 3, max: 8) }
       .to raise_error(described_class) do |error|
         aggregate_failures do
           expect(error.i18n_key).to eq(:inclusion)
-          expect(error.i18n_options).to eq({ scope: [:errors, :messages] })
+          expect(error.i18n_options).to eq({ min: 3, max: 8, scope: [:errors, :messages] })
           expect(error).to be_translatable
         end
       end
