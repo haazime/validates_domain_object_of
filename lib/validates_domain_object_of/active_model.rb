@@ -1,26 +1,28 @@
-require 'validates_domain_object_of'
 require 'active_model'
+require 'validates_domain_object_of'
 
 module ActiveModel
   module Validations
     class DomainObjectValidator < EachValidator
+      include ValidatesDomainObjectOf::ExceptionHandler
+
       def validate_each(model, attr, value)
         klass = options[:object_class]
         method = options[:method] || :new
 
-        ValidatesDomainObjectOf.construct!(klass, method, value)
-
-      rescue DomainObjectArgumentError => ex
-        message =
-          if defined?(I18n) && ex.translatable?
-            I18n.t(ex.i18n_key, ex.i18n_options)
-          else
-            ex.message
+        domain_model_construction do |c|
+          c.try do
+            ValidatesDomainObjectOf.construct!(klass, method, value)
           end
-        model.errors.add(attr, message)
 
-      rescue ArgumentError => ex
-        model.errors.add(attr, :invalid, message: options[:message])
+          c.rescue_domain_object_argument_error do |msg|
+            model.errors.add(attr, msg)
+          end
+
+          c.rescue_argument_error do
+            model.errors.add(attr, :invalid, message: options[:message])
+          end
+        end
       end
 
       def check_validity!

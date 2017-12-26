@@ -1,4 +1,5 @@
 require 'validates_domain_object_of/version'
+require 'validates_domain_object_of/exception_handler'
 require 'domain_object_argument_error'
 
 module ValidatesDomainObjectOf
