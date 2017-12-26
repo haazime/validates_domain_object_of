@@ -34,7 +34,7 @@ RSpec.describe ActiveModel::Validations::DomainObjectValidator do
 
   context 'localize' do
     before do
-      CapacityForm.validates_domain_object_of(:work_time_in_hours, object_class: WorkTime, method: :from_hours, message: 'x')
+      CapacityForm.validates_domain_object_of(:work_time_in_hours, object_class: WorkTime, method: :from_hours)
       WorkTime.set_error_thrower(:localize)
     end
 

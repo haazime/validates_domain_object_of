@@ -7,9 +7,13 @@ WorkTime = Struct.new(:minutes) do
     end
 
     ERROR_THROWERS = {
-      default: -> { raise ArgumentError },
-      message: -> { raise DomainObjectArgumentError.new('must be <= 8') },
-      localize: -> { raise DomainObjectArgumentError.new(key: :invalid, scope: [:domain_objects, :work_time]) }
+      default: -> (_h) { raise ArgumentError },
+      message: -> (h) { raise DomainObjectArgumentError.new("must be <= #{h}") },
+      localize: -> (h) {
+        raise DomainObjectArgumentError.new(
+          key: :grater_than_in_hour, hour: h, scope: [:domain_objects, :work_time]
+        )
+      }
     }
 
     def set_error_thrower(key)
@@ -18,7 +22,7 @@ WorkTime = Struct.new(:minutes) do
   end
 
   def initialize(minutes)
-    self.class.error_thrower.call if minutes > 60 * 8
+    self.class.error_thrower.call(8) if minutes > 60 * 8
     super
   end
 end

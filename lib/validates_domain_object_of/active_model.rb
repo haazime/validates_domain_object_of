@@ -13,11 +13,12 @@ module ActiveModel
       rescue DomainObjectArgumentError => ex
         message =
           if defined?(I18n) && ex.translatable?
-            I18n.t(ex.i18n_key, scope: ex.i18n_scope)
+            I18n.t(ex.i18n_key, ex.i18n_options)
           else
             ex.message
           end
         model.errors.add(attr, message)
+
       rescue ArgumentError => ex
         model.errors.add(attr, :invalid, message: options[:message])
       end

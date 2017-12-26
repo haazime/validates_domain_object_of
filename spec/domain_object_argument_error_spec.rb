@@ -10,11 +10,11 @@ RSpec.describe DomainObjectArgumentError do
   end
 
   it do
-    expect { raise described_class.new(key: :invalid, scope: [:a, :b, :c]) }
+    expect { raise described_class.new(key: :invalid, count: 7, scope: [:a, :b, :c]) }
       .to raise_error(described_class) do |error|
         aggregate_failures do
           expect(error.i18n_key).to eq(:invalid)
-          expect(error.i18n_scope).to eq([:a, :b, :c])
+          expect(error.i18n_options).to eq({ count: 7, scope: [:a, :b, :c] })
           expect(error).to be_translatable
         end
       end
