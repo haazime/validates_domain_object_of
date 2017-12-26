@@ -1,5 +1,5 @@
 require 'validates_domain_object_of/version'
-require 'validates_domain_object_of/exception_handler'
+require 'validates_domain_object_of/context'
 require 'domain_object_argument_error'
 
 module ValidatesDomainObjectOf
@@ -11,6 +11,12 @@ module ValidatesDomainObjectOf
 
     def construct!(domain_object_class, method, arg)
       domain_object_class.send(method.to_sym, arg)
+    end
+
+    def construct_with!(*args)
+      context = Context.new
+      yield(context)
+      context.try! { construct!(*args) }
     end
   end
 end

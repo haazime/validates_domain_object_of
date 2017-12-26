@@ -4,22 +4,17 @@ require 'validates_domain_object_of'
 module ActiveModel
   module Validations
     class DomainObjectValidator < EachValidator
-      include ValidatesDomainObjectOf::ExceptionHandler
 
       def validate_each(model, attr, value)
         klass = options[:object_class]
         method = options[:method] || :new
 
-        domain_model_construction do |c|
-          c.try do
-            ValidatesDomainObjectOf.construct!(klass, method, value)
-          end
-
-          c.rescue_domain_object_argument_error do |msg|
+        ValidatesDomainObjectOf.construct_with!(klass, method, value) do |ctx|
+          ctx.rescue_translatable_error do |msg|
             model.errors.add(attr, msg)
           end
 
-          c.rescue_argument_error do
+          ctx.rescue_generic_error do
             model.errors.add(attr, :invalid, message: options[:message])
           end
         end
