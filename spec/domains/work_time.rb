@@ -10,9 +10,7 @@ WorkTime = Struct.new(:minutes) do
       default: -> (_h) { raise ArgumentError },
       message: -> (h) { raise DomainObjectArgumentError.new("must be <= #{h}") },
       localize: -> (h) {
-        raise DomainObjectArgumentError.new(
-          key: :grater_than_in_hour, hour: h, scope: [:domain_objects, :work_time]
-        )
+        raise DomainObjectArgumentError.i18n(:greater_than_in_hour, hour: h, scope: [:domain_objects, :work_time])
       }
     }
 

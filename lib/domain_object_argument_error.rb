@@ -1,5 +1,12 @@
 class DomainObjectArgumentError < ArgumentError
+  DEFAULT_I18N_SCOPE = [:errors, :messages]
+
   attr_reader :i18n_key, :i18n_options
+
+  def self.i18n(key, options = {})
+    scope = options.delete(:scope) || DEFAULT_I18N_SCOPE
+    new(options.merge(key: key).merge(scope: scope))
+  end
 
   def initialize(args)
     message = nil
