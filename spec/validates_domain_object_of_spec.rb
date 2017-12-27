@@ -26,8 +26,10 @@ RSpec.describe ValidatesDomainObjectOf do
     end
   end
 
-  it do
-    expect { described_class.construct!(WorkTime, :from_jikan, 5) }
-      .to raise_error(NoMethodError)
+  context 'call undefined method' do
+    it do
+      expect { described_class.construct!(WorkTime, :from_jikan, 5) }
+        .to raise_error(NoMethodError)
+    end
   end
 end
