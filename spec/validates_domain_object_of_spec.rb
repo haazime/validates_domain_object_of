@@ -6,6 +6,10 @@ RSpec.describe ValidatesDomainObjectOf do
     expect(described_class.construct!(WorkTime, :new, 60 * 3)).to be_truthy
   end
 
+  it do
+    expect(described_class.construct!(WorkTime, :parse, 5, unit: :hour))
+  end
+
   context 'raise DomainObjectArgumentError' do
     before { WorkTime.set_error_thrower(:localize) }
     after { WorkTime.set_error_thrower(:default) }

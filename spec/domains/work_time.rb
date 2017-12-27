@@ -2,6 +2,11 @@ WorkTime = Struct.new(:minutes) do
   class << self
     attr_accessor :error_thrower
 
+    def parse(value, unit:)
+      return new(value) if unit.to_sym == :minutes
+      from_hours(value)
+    end
+
     def from_hours(hours)
       new(hours * 60)
     end

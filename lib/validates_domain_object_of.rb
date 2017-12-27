@@ -9,8 +9,8 @@ module ValidatesDomainObjectOf
       I18n.load_path += Dir.glob(File.expand_path(File.join(File.dirname(__FILE__), '../config/locales/*.yml')))
     end
 
-    def construct!(domain_object_class, method, arg)
-      domain_object_class.send(method.to_sym, arg)
+    def construct!(domain_object_class, method, *args)
+      domain_object_class.send(method.to_sym, *args)
     end
 
     def construct_with!(*args)
