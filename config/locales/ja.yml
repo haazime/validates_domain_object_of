@@ -1,4 +1,0 @@
-ja:
-  domain_objects:
-    work_time:
-      greater_than_in_hour: '%{hour}時間を超えています'

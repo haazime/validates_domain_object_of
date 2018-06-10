@@ -45,6 +45,15 @@ RSpec.describe ActiveModel::Validations::DomainObjectValidator do
 
     def enalbe_i18n
       ValidatesDomainObjectOf.load_i18n_locales
+      I18n.backend.store_translations(
+        :ja, {
+          domain_objects: {
+            work_time: {
+              greater_than_in_hour: '%{hour}時間を超えています'
+            }
+          }
+        }
+      )
       I18n.locale = :ja
     end
 end
