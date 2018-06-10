@@ -10,6 +10,7 @@ module ValidatesDomainObjectOf
     end
 
     def construct!(domain_object_class, method, *args)
+      return construct_by_block(domain_object_class, *args) unless method
       domain_object_class.send(method.to_sym, *args)
     end
 
@@ -18,6 +19,13 @@ module ValidatesDomainObjectOf
       yield(context)
       context.try! { construct!(*args) }
     end
+
+    private
+
+      def construct_by_block(domain_object_class, *args)
+        block = args.pop
+        block.call(domain_object_class, *args)
+      end
   end
 end
 
