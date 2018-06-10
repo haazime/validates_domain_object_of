@@ -3,11 +3,18 @@ require 'work_time'
 
 RSpec.describe ValidatesDomainObjectOf do
   it do
-    expect(described_class.construct!(WorkTime, :new, 60 * 3)).to be_truthy
+    object = described_class.construct!(WorkTime, :new, 60 * 3)
+    expect(object).to eq(WorkTime.new(60 * 3))
   end
 
   it do
-    expect(described_class.construct!(WorkTime, :parse, 5, unit: :hour))
+    object = described_class.construct!(WorkTime, :parse, 5, unit: :hour)
+    expect(object).to eq(WorkTime.parse(5, unit: :hour))
+  end
+
+  it do
+    object = described_class.construct!(WorkTime, nil, '2', -> (klass, value) { klass.from_hours(value.to_i) })
+    expect(object).to eq(WorkTime.from_hours('2'.to_i))
   end
 
   context 'raise DomainObjectArgumentError' do
