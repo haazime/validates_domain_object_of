@@ -14,15 +14,21 @@ module ActiveModel
           else
             options[:method] || :new
           end
+        args = [value, block].compact
 
-        ValidatesDomainObjectOf.construct_with!(klass, method, *[value, block].compact) do |ctx|
-          ctx.rescue_translatable_error do |msg|
-            model.errors.add(attr, msg)
+        domain_object =
+          ValidatesDomainObjectOf.construct_with!(klass, method, *args) do |ctx|
+            ctx.rescue_translatable_error do |msg|
+              model.errors.add(attr, msg)
+            end
+
+            ctx.rescue_generic_error do
+              model.errors.add(attr, :invalid, message: options[:message])
+            end
           end
 
-          ctx.rescue_generic_error do
-            model.errors.add(attr, :invalid, message: options[:message])
-          end
+        if model.respond_to?(:domain_objects)
+          model.domain_objects = Hash(model.domain_objects).merge(attr => domain_object)
         end
       end
 
