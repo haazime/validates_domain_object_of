@@ -7,9 +7,15 @@ module ActiveModel
 
       def validate_each(model, attr, value)
         klass = options[:object_class]
-        method = options[:method] || :new
+        block = options[:by]
+        method =
+          if block
+            nil
+          else
+            options[:method] || :new
+          end
 
-        ValidatesDomainObjectOf.construct_with!(klass, method, value) do |ctx|
+        ValidatesDomainObjectOf.construct_with!(klass, method, *[value, block].compact) do |ctx|
           ctx.rescue_translatable_error do |msg|
             model.errors.add(attr, msg)
           end
